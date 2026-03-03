@@ -1,61 +1,148 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import StorageWrapper from './StorageWrapper'
 
 export default function Home() {
-  const products = [
-    {
-      name: 'GLP-T',
-      price: '$39.99',
-      description: '5mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'GLP-R',
-      price: '$44.99',
-      description: '5mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'GHK-CU',
-      price: '$49.99',
-      description: '2mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'KLOW',
-      price: '$39.99',
-      description: '2mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'Semaglutide',
-      price: '$59.99',
-      description: '5mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'GLOW',
-      price: '$34.99',
-      description: '5mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'BAC WATER',
-      price: '$49.99',
-      description: '10mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-    {
-      name: 'Melanotan II',
-      price: '$39.99',
-      description: '10mg Peptide Vial',
-      image: '/placeholder-bottle.png',
-    },
-  ]
+  const [verified, setVerified] = useState(false)
 
-  // Hide Semaglutide and Melanotan II
-  const visibleProducts = products.filter(
-    (p) => !['Semaglutide', 'Melanotan II'].includes(p.name)
-  )
+  // Load saved verification on page load
+  useEffect(() => {
+    const saved = localStorage.getItem('ageVerified')
+    if (saved === 'true') {
+      setVerified(true)
+    }
+  }, [])
+
+  const handleEnter = () => {
+    localStorage.setItem('ageVerified', 'true')
+    setVerified(true)
+  }
+
+  const handleExit = () => {
+    window.location.href = 'https://google.com'
+  }
+
+  // AGE DISCLAIMER SCREEN
+  if (!verified) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          backgroundColor: '#e3e2e2',
+          color: 'black',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '24px',
+        }}
+      >
+        <div style={{ maxWidth: '800px', width: '100%', textAlign: 'center' }}>
+          <h1
+            style={{
+              fontSize: '48px',
+              fontWeight: 'bold',
+              marginBottom: '16px',
+            }}
+          >
+            Restricted Access – For Research Only Age Verification
+          </h1>
+
+          <p
+            style={{ fontSize: '20px', marginBottom: '24px', lineHeight: 1.5 }}
+          >
+            To continue, you must confirm that you are at least{' '}
+            <strong>21 years of age</strong>.
+          </p>
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '16px',
+              marginBottom: '32px',
+            }}
+          >
+            <button
+              onClick={handleEnter}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: 'green',
+                color: 'white',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+              }}
+            >
+              Yes, I am 21+
+            </button>
+
+            <button
+              onClick={handleExit}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#ba2c27',
+                color: 'white',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+              }}
+            >
+              No, Exit
+            </button>
+          </div>
+
+          <div
+            style={{
+              textAlign: 'left',
+              fontSize: '18px',
+              lineHeight: 1.5,
+              paddingLeft: '60px',
+            }}
+          >
+            <p style={{ marginBottom: '12px' }}>
+              By entering and using this website, you confirm that you have
+              read, understood, and agree to the following terms:
+            </p>
+
+            <p style={{ marginBottom: '12px' }}>
+              You are 21 years of age or older. You understand that all products
+              offered on this website are for research purposes only and are not
+              intended for human or veterinary use.
+            </p>
+
+            <p style={{ marginBottom: '12px' }}>
+              You affirm that you are a qualified researcher or informed
+              purchaser and accept full responsibility for proper handling and
+              compliance.
+            </p>
+
+            <p style={{ marginBottom: '12px' }}>
+              You acknowledge that Peps On A Budget assumes no liability for
+              misuse or unintended application of any products purchased.
+            </p>
+
+            <p>
+              If you do not meet these requirements, you must exit this website
+              immediately.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // HOMEPAGE (NO PRICES, NO MG, NO PEPTIDE VIAL)
+  const products = [
+    { name: 'GLP-T', description: '', image: '/placeholder-bottle.png' },
+    { name: 'GLP-R', description: '', image: '/placeholder-bottle.png' },
+    { name: 'GHK-CU', description: '', image: '/placeholder-bottle.png' },
+    { name: 'KLOW', description: '', image: '/placeholder-bottle.png' },
+    { name: 'GLOW', description: '', image: '/placeholder-bottle.png' },
+    { name: 'BAC WATER', description: '', image: '/placeholder-bottle.png' },
+  ]
 
   return (
     <>
@@ -76,13 +163,16 @@ export default function Home() {
           className="product-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+
+            // ✅ MOBILE FIX — THIS IS THE ONLY CHANGE YOU NEEDED
+            gridTemplateColumns: 'repeat(3, 1fr)',
+
             gap: '30px',
             maxWidth: '1000px',
             margin: '40px auto 0 auto',
           }}
         >
-          {visibleProducts.map((p, index) => (
+          {products.map((p, index) => (
             <div
               key={index}
               className="card"
@@ -108,38 +198,15 @@ export default function Home() {
                 style={{
                   fontSize: '24px',
                   fontWeight: 'bold',
-                  marginBottom: '8px',
+                  marginBottom: '70px',
                   color: 'white',
                 }}
               >
                 {p.name}
               </h2>
 
-              <p
-                style={{
-                  fontSize: '16px',
-                  marginBottom: '8px',
-                  color: 'white',
-                }}
-              >
-                {p.description}
-              </p>
-
-              <p
-                style={{
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  marginBottom: '16px',
-                  color: 'white',
-                }}
-              >
-                {p.price}
-              </p>
-
               <a
-                href={`/products/${p.name
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]/g, '')}`}
+                href={`/products/${p.name.toLowerCase().replace(/[^a-z0-9]/g, '')}`}
                 style={{
                   display: 'inline-block',
                   padding: '10px 20px',
@@ -156,7 +223,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* STORAGE BOXES SECTION */}
         <section
           style={{
             marginTop: '60px',

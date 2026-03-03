@@ -6,7 +6,7 @@ export default function AgePage() {
   const router = useRouter()
 
   const handleEnter = () => {
-    localStorage.setItem('ageVerified', 'true')
+    // No remembering — always show disclaimer on every visit
     router.push('/')
   }
 
@@ -38,6 +38,7 @@ export default function AgePage() {
         >
           Restricted Access – For Research Only Age Verification
         </h1>
+
         <p style={{ fontSize: '20px', marginBottom: '24px', lineHeight: 1.5 }}>
           To continue, you must confirm that you are at least{' '}
           <strong>21 years of age</strong>.
