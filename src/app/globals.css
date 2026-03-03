@@ -159,3 +159,8 @@ body {
     max-width: 110px !important;
   }
 }
+@media (max-width: 768px) {
+  .storage-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
