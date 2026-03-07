@@ -40,7 +40,7 @@ export default function StorageBox({ qty: initialQty }: { qty: number }) {
       )}
 
       <img
-        src="/boxplaceholder.png"
+        src="/placeholder-bottle.png"
         alt="Storage Box"
         style={{
           width: '140px',
