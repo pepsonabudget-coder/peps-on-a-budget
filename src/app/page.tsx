@@ -1,7 +1,51 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import StorageWrapper from './StorageWrapper'
+
+// Cart Header Component
+function CartHeader() {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage.getItem('cart')
+      const cart = stored ? JSON.parse(stored) : []
+      const total = cart.reduce(
+        (sum: number, item: { quantity: number }) => sum + item.quantity,
+        0
+      )
+      setCount(total)
+    }
+  }, [])
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        padding: '20px 40px',
+        position: 'relative',
+        zIndex: 10000,
+      }}
+    >
+      <Link
+        href="/cart"
+        style={{
+          color: 'white',
+          fontSize: '20px',
+          padding: '6px 14px',
+          borderRadius: '6px',
+          textDecoration: 'none',
+        }}
+      >
+        🛒 Cart ({count})
+      </Link>
+    </div>
+  )
+}
 
 export default function Home() {
   const [verified, setVerified] = useState(false)
@@ -146,6 +190,8 @@ export default function Home() {
 
   return (
     <>
+      <CartHeader />
+
       <img src="/logo.png" className="site-logo" />
 
       <main
@@ -163,10 +209,7 @@ export default function Home() {
           className="product-grid"
           style={{
             display: 'grid',
-
-            // ✅ MOBILE FIX — THIS IS THE ONLY CHANGE YOU NEEDED
             gridTemplateColumns: 'repeat(3, 1fr)',
-
             gap: '30px',
             maxWidth: '1000px',
             margin: '40px auto 0 auto',

@@ -1,15 +1,19 @@
 'use client'
 
 export default function GLPTVariant({
+  id,
   productName,
   mg,
   price,
   qty,
+  addToCart,
 }: {
+  id: string
   productName: string
   mg: string
-  price: string
+  price: number
   qty: number
+  addToCart: (item: any) => void
 }) {
   const outOfStock = qty === 0
 
@@ -72,12 +76,20 @@ export default function GLPTVariant({
       <p style={{ fontSize: '18px', color: 'white' }}>{mg}</p>
 
       <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}>
-        {price}
+        ${price.toFixed(2)}
       </p>
 
       <p style={{ fontSize: '18px', color: 'lime' }}>QTY {qty}</p>
 
       <button
+        onClick={() =>
+          addToCart({
+            id,
+            name: productName,
+            mg,
+            price,
+          })
+        }
         style={{
           marginTop: '14px',
           padding: '10px 20px',

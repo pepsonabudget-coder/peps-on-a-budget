@@ -147,11 +147,12 @@ body {
 
 /* Small screens: logo scrolls with content and doesn’t cover boxes */
 .site-logo {
+  width: 180px;
+  height: auto;
   display: block;
-  margin: 20px auto;
-  width: 140px !important;
-  max-width: 140px !important;
-  height: auto !important;
+  margin: 20px auto 0 auto;
+  position: relative;
+  z-index: -1;
 }
 @media (max-width: 900px) {
   .site-logo {
